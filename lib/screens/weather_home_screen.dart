@@ -154,7 +154,7 @@ class _HomeScreenState extends State<WeatherHomeScreen> {
                                   ImageData(
                                       'assets/barometer.png',
                                       'Air pressure',
-                                      data.airPressure),
+                                      data.airPressure.toString() ),
                                 ],
                               ),
                               const SizedBox(
@@ -166,8 +166,7 @@ class _HomeScreenState extends State<WeatherHomeScreen> {
                                 children: [
                                   ImageData('assets/humidity.png', 'Humidity',
                                       '${data.humidity}%'),
-                                  ImageData(
-                                      'assets/protection.png', 'UV', 'Weaker'),
+
                                   ImageData('assets/visibility.png',
                                       'Visibility', '${data.visibility}km'),
                                 ],

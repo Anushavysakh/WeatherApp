@@ -6,11 +6,11 @@ class WeatherModel {
   final String? description;
   final int humidity;
   final int clouds;
-  final String airPressure;
+  final double airPressure;
 
   final double? latitude;
   final double? longitude;
-  final String visibility;
+  final int visibility;
 
   WeatherModel({
     this.cityName,
@@ -36,7 +36,7 @@ class WeatherModel {
       humidity: json['main']['humidity'],
       visibility: json['visibility'],
       clouds: json['clouds']['all'],
-      airPressure: json['main']['pressure'],
+      airPressure: json['main']['pressure'].toDouble(),
       description: json['weather'][0]['description'],
       latitude: json['coord']['lat'].toDouble(),
       longitude: json['coord']['lon'].toDouble(),
