@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:task/screens/login_register_screen.dart';
 import 'package:task/services/auth_service.dart';
 import '../models/weather_model.dart';
 import '../services/weather_service.dart';
@@ -85,18 +86,20 @@ class _HomeScreenState extends State<WeatherHomeScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Expanded(
-                          child: Wrap(
+                        Expanded(flex: 2,
+                          child: Row(
                             children: [
-                              // Text(
-                              //   data.cityName.toString() ?? '',
-                              //   style: const TextStyle(
-                              //       fontSize: 32,
-                              //       color: Colors.white,
-                              //       fontWeight: FontWeight.w900),
-                              // ),
+                              Flexible(
+                                child: Text(
+                                  data.cityName.toString() ?? '',
+                                  style: const TextStyle(
+                                      fontSize: 29,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w900),
+                                ),
+                              ),
                               const SizedBox(
-                                width: 120,
+                                width: 80,
                               ),
                               IconButton(
                                 icon: const Icon(Icons.maps_home_work_sharp),
@@ -108,23 +111,11 @@ class _HomeScreenState extends State<WeatherHomeScreen> {
                                 },
                               ),
                               IconButton(
-                                  onPressed: () {
-                                    authService.signOut();
-                                    Navigator.of(context).pop();
-                                  },
-                                  icon: Icon(Icons.logout)),
-                              const SizedBox(
-                                width: 5,
-                              ),
+                                  onPressed: signOut,
+                                  icon: Icon(Icons.logout),color: Colors.white,),
+
                             ],
                           ),
-                        ),
-                        Text(
-                          data.cityName.toString(),
-                          style: const TextStyle(
-                              fontSize: 32,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w900),
                         ),
                         const SizedBox(
                           height: 120,
@@ -194,8 +185,10 @@ class _HomeScreenState extends State<WeatherHomeScreen> {
     );
   }
 
-  void signOut() async {
-
+  signOut() async {
+    await authService.signOut();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginRegistrationScreen()));
   }
 
   List imageData = [
