@@ -20,7 +20,6 @@ class InputTextFieldWidget extends StatelessWidget {
       onChanged: (value) {
         controller!.text  =  value;
       },
-
       controller: controller,
       decoration: InputDecoration(
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
@@ -29,4 +28,7 @@ class InputTextFieldWidget extends StatelessWidget {
       ),
     );
   }
+
+
+
 }

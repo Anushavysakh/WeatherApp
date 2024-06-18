@@ -1,7 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:task/screens/weather_home_screen.dart';
 import 'package:task/services/auth_service.dart';
-
 import '../widgets/input_text_field_widget.dart';
 
 class LoginRegistrationScreen extends StatefulWidget {
@@ -38,7 +39,7 @@ class _LoginRegistrationScreenState extends State<LoginRegistrationScreen> {
             left: 20,
             right: 20,
             top: 10,
-            bottom: 10,
+            bottom: 100,
           ),
           decoration: const BoxDecoration(
             image: DecorationImage(
@@ -47,7 +48,6 @@ class _LoginRegistrationScreenState extends State<LoginRegistrationScreen> {
             ),
           ),
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(
@@ -61,9 +61,7 @@ class _LoginRegistrationScreenState extends State<LoginRegistrationScreen> {
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               isLogin
                   ? InputTextFieldWidget(
                       controller: userNameController,
@@ -71,9 +69,7 @@ class _LoginRegistrationScreenState extends State<LoginRegistrationScreen> {
                       icon: const Icon(Icons.person),
                       textInputType: TextInputType.text,
                     )
-                  : const SizedBox(
-                      height: 10,
-                    ),
+                  : const SizedBox(height: 10),
               const SizedBox(
                 height: 15,
               ),
@@ -83,23 +79,17 @@ class _LoginRegistrationScreenState extends State<LoginRegistrationScreen> {
                 icon: const Icon(Icons.email),
                 textInputType: TextInputType.emailAddress,
               ),
-              const SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
               InputTextFieldWidget(
                 controller: passwordController,
                 hintText: 'Password',
                 icon: const Icon(Icons.password),
                 textInputType: TextInputType.visiblePassword,
               ),
-              const SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () {
-                  isLogin
-                      ? registerUser()
-                      : loginUser();
+                  isLogin ? registerUser() : loginUser();
                 },
                 child: Text(isLogin ? 'Register' : 'Login'),
               ),
@@ -114,7 +104,12 @@ class _LoginRegistrationScreenState extends State<LoginRegistrationScreen> {
                       onPressed: () {
                         setState(() {
                           isLogin = !isLogin;
+                          emailController.clear();
+                          passwordController.clear();
                         });
+                        if (!isLogin) {
+                          userNameController.clear();
+                        }
                       },
                       child: Text(isLogin ? 'login' : 'Register'))
                 ],
@@ -132,11 +127,35 @@ class _LoginRegistrationScreenState extends State<LoginRegistrationScreen> {
           email: emailController.text, password: passwordController.text);
       if (firebaseResponse == 'success') {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => WeatherHomeScreen(),
+          builder: (context) => const WeatherHomeScreen(),
         ));
+      } else {
+        _buildShowDialog('Login Failed',
+            'The user could not be registered. Please check your credentials and try again.');
       }
     } on Exception catch (e) {
+      log(e.toString());
     }
+  }
+
+  _buildShowDialog(String title, String content) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title:  Text(title),
+          content:  Text(content),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 
   void registerUser() async {
@@ -150,6 +169,8 @@ class _LoginRegistrationScreenState extends State<LoginRegistrationScreen> {
       setState(() {
         isLogin = !isLogin;
       });
+    } else {
+       _buildShowDialog('Registration Failed', "Try again..");
     }
   }
 }

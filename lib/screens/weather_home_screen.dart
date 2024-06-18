@@ -91,7 +91,7 @@ class _HomeScreenState extends State<WeatherHomeScreen> {
                             children: [
                               Flexible(
                                 child: Text(
-                                  data.cityName.toString() ?? '',
+                                  data.countryName.toString() ?? '',
                                   style: const TextStyle(
                                       fontSize: 29,
                                       color: Colors.white,
